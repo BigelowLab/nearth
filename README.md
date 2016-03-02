@@ -57,7 +57,7 @@ library(rgdal)
 library(raster)
 
 v <- read_nearth(name = 'ne_50m_coastline', what = 'vector')
-sp::spplot(v)
+sp::spplot(v[[1]])
 
 r <- read_nearth(name = 'NE1_50M_SR_W', what = 'raster', form = 'brick')
 raster::plotRGB(r)
