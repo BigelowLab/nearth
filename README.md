@@ -57,7 +57,12 @@ library(rgdal)
 library(raster)
 
 v <- read_nearth(name = 'ne_50m_coastline', what = 'vector')
+# note that we geta list back
 sp::spplot(v[[1]])
+
+# read and crop the vectors to a bounding box [left, right, bottom, top]
+# cropping can make for faster graphics in some cases
+v <- read_nearth(name = 'ne_50m_coastline', what = 'vector', bb = c(-73,-62,39,45))
 
 r <- read_nearth(name = 'NE1_50M_SR_W', what = 'raster', form = 'brick')
 raster::plotRGB(r)

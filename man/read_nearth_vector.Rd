@@ -4,10 +4,12 @@
 \alias{read_nearth_vector}
 \title{Read one vector data set using \code{rgdal::readOGR()}}
 \usage{
-read_nearth_vector(filename, ...)
+read_nearth_vector(filename, bb = NULL, ...)
 }
 \arguments{
 \item{filename}{character, one file name}
+
+\item{bb}{bounding box to clip to [left, right, bottom, top]}
 
 \item{...}{further arguments for \code{rgdal::readOGR()}}
 }

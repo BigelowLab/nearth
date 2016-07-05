@@ -1,3 +1,59 @@
+#' Convert a 4-element bbox vector to a matrix of two columns (x and y)
+#'
+#' @export
+#' @param x a 4-element numeric vector of left, right, bottom, top coordinates
+#' @param close logical, if TRUE then close the polygon such that the first 
+#'    and last verices are the same
+#' @return a matrix of 2 columns and either 5 rows (closed) or 4 rows (open)
+bbox_to_matrix <- function(x = c(-72,-63,39,46), close = TRUE){
+   if (close) {
+     x <-  matrix(c(
+            x[1],x[2],x[2],x[1], x[1],
+            x[3],x[3],x[4],x[4], x[3]),
+           ncol = 2)
+   } else {
+      x <- matrix(c(
+            x[1],x[2],x[2],x[1],
+            x[3],x[3],x[4],x[4]),
+           ncol = 2)
+   }
+   x
+}
+
+#' Convert a 4-element bbox vector to a SpatialPolygons object
+#' 
+#' @export
+#' @param bb a 4-element numeric vector of left, bottom, right, top coordinates
+#' @param proj_string a proj4string suitable to pass to \code{sp::CRS()}
+#' @return a SpatialPolygons object
+bbox_to_SpatialPolygons <- function(bb = c(-72,-63,39,46),
+   proj_string = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"){
+   bb_p <- sp::Polygon(bbox_to_matrix(bb))
+   bb_ps <- sp::Polygons(list(bb_p), "bb")
+   sp::SpatialPolygons(list(bb_ps), proj4string = sp::CRS(proj_string))
+}
+
+#' Convert a 4-element bbox vector to a SpatialPolygonsDataFrame object
+#' 
+#' @export
+#' @param bb a 4-element numeric vector of left, bottom, right, top coordinates
+#' @param ... further arguments for \code{bbox_to_SpatialPolygons}
+#' @return a SpatialPolygons object
+bbox_to_SpatialPolygonsDataFrame <- function(bb = c(-72,-63,39,46),...){
+   spolys <- bbox_to_SpatialPolygons(bb, ...)
+   sp::SpatialPolygonsDataFrame(spolys,
+      data = data.frame(ID = names(spolys), row.names = names(spolys)))
+}
+
+
+
+#' Clip polygons (shapefile data) to a bounding box
+#'
+#' @export
+#' @param PP Spatial* object
+#' @param bb the 4 element bounding box to clip to [left, right, bottom, top]
+#' @return the clipped Spatial* object
+ 
 
 #' Test for the existence of a Natural Earth path in R's \code{options()}
 #'
@@ -104,9 +160,10 @@ strip_extension <- function(x, sep = "."){
 #' 
 #' @export
 #' @param filename character, one file name
+#' @param bb bounding box to clip to [left, right, bottom, top]
 #' @param ... further arguments for \code{rgdal::readOGR()}
 #' @return Spatial* class object or NULL
-read_nearth_vector <- function(filename, ...){
+read_nearth_vector <- function(filename, bb = NULL, ...){
    stopifnot(requireNamespace("rgdal", quietly = TRUE))
    stopifnot(has_nearth(what='vector'))
    stopifnot(file.exists(filename[1]))
@@ -115,9 +172,13 @@ read_nearth_vector <- function(filename, ...){
       ...))
    if (inherits(x, "try-error")){
       return(NULL)
-   } else {
-      return(x)
+   } 
+   
+   if (!is.null(bb)){
+      spbb <- bbox_to_SpatialPolygonsDataFrame(bb, proj_string = proj4string(x))
+      x <- raster::crop(x, spbb)
    }
+   return(x)
 }
 
 #' Read one raster data set using \code{raster::raster()}, \code{raster::stack()}
@@ -126,24 +187,29 @@ read_nearth_vector <- function(filename, ...){
 #' @export
 #' @param filename character, one file name
 #' @param form character one of "raster", "stack", "brick" (default)
+#' @param bb bounding box to clip to [left, right, bottom, top]
 #' @param ... further arguments for \code{raster::raster()}, \code{raster::stack()}
 #' or \code{raster::brick()}
 #' @return Raster* class object or NULL
 read_nearth_raster <- function(filename, 
    form = c("raster", "stack", "brick")[3],
+   bb = NULL,
    ...){
-   stopifnot(requireNamespace("raster", quietly = TRUE))
-   stopifnot(has_nearth(what='raster'))
-   stopifnot(file.exists(filename[1]))
-   x <- switch(tolower(form[1]),
-      "raster" = try(raster::raster(filename[1], ...)),
-      "stack"  = try(raster::stack(filename[1], ...)),
-      "brick"  = try(raster::brick(filename[1], ...)) )
-   if (inherits(x, "try-error")){
-      return(NULL)
-   } else {
-      return(x)
-   }
+    stopifnot(requireNamespace("raster", quietly = TRUE))
+    stopifnot(has_nearth(what='raster'))
+    stopifnot(file.exists(filename[1]))
+    x <- switch(tolower(form[1]),
+       "raster" = try(raster::raster(filename[1], ...)),
+       "stack"  = try(raster::stack(filename[1], ...)),
+       "brick"  = try(raster::brick(filename[1], ...)) )
+    if (inherits(x, "try-error")){
+       return(NULL)
+    } 
+    if (!is.null(bb)){
+        spbb <- bbox_to_SpatialPolygonsDataFrame(bb, proj_string = proj4string(x))
+        x <- raster::crop(x, spbb)
+    }
+    return(x)
 }
 
 
