@@ -49,7 +49,7 @@ vfile <- find_nearth_vectors(name = 'ne_50m_coastline')
 rfile <- find_nearth_rasters(name = 'NE1_50M_SR_W')
 ```
 
-If the `rgdal` and `raster` packages are installed, you can read the Natural Earth products using `read_nearth`.
+If the `rgdal` and `raster` packages are installed, you can read the Natural Earth products using `read_nearth`.  *NOTE: you can provide just the name of the shapefile as shown below rather than the full filepath specification.*
 
 ```R
 library(nearth)

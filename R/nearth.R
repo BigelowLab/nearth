@@ -50,6 +50,7 @@ nearth_path <- function(what = c('vector', 'raster')[1]){
 find_nearth_vectors <- function(name = 'ne_50m_coastline', 
    ext = '.shp',
    path = nearth_path(what = 'vector') ){
+      
    stopifnot(has_nearth(what='vector'))
    pat <- glob2rx(paste0("*",name, ext))
    names(pat) <- name
@@ -70,6 +71,7 @@ find_nearth_vectors <- function(name = 'ne_50m_coastline',
 find_nearth_rasters <- function(name = 'GRAY_50M_SR_O', 
    ext = '.tif',
    path = nearth_path(what = 'raster')){
+   
    stopifnot(has_nearth(what='raster'))
    pat <- glob2rx(paste0("*",name, ext))
    names(pat) <- name
@@ -150,7 +152,8 @@ read_nearth_raster <- function(filename,
 #'
 #' @export
 #' @param name character, one or more names to find, must point to either
-#'    vectors or rasters but not a mix of the two
+#'    vectors or rasters but not a mix of the two.  You can also provide the 
+#'    full filepath but providing just the name can be easier.
 #' @param what character either 'vector' (default) or 'raster'
 #' @param ... further arguments for \code{nearth::read_nearth_raster()} or 
 #' or \code{nearth::read_nearth_vector()}
@@ -158,6 +161,9 @@ read_nearth <- function(name = 'ne_50m_coastline',
    what = c('vector', 'raster')[1],
    ...){
    stopifnot(has_nearth(what=what[1]))
+   
+   name <- strip_extension(basename(name))
+   
    X <- NULL
    if (tolower(what[1]) == "raster"){
       ff <- find_nearth_rasters(name)
