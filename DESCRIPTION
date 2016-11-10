@@ -10,8 +10,9 @@ Description: Natural Earth http://www.naturalearthdata.com/ provides beautiful
     provides simple utilities for locating such data files downloaded to your
     local storage.
 Depends:
-    R (>= 3.0),
+    R (>= 3.0)
+Imports:
+    rgdal,
+    sp,
     raster
-Suggests:
-    rgdal
 RoxygenNote: 5.0.1

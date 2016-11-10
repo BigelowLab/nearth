@@ -28,7 +28,7 @@ install_github("btupper/nearth")
 
 #### Configuration within R
 
-The `nearth` package will find files for you by name.  To simplify this process, you should do the following either upon startup of R or before you use `nearth`.
+The `nearth` package will find files for you by name.  To simplify this process, you should do the following either upon startup of R or before you use `nearth`.  Set the path values to what makes sense for your setup.
 
 ```R
 options(NEARTH_VECTOR_PATH = "/Users/Shared/data/natural_earth/vector",
@@ -57,14 +57,17 @@ library(rgdal)
 library(raster)
 
 v <- read_nearth(name = 'ne_50m_coastline', what = 'vector')
-# note that we geta list back
+# note that the function returns a list of Spatial* objects
 sp::spplot(v[[1]])
 
 # read and crop the vectors to a bounding box [left, right, bottom, top]
 # cropping can make for faster graphics in some cases
 v <- read_nearth(name = 'ne_50m_coastline', what = 'vector', bb = c(-73,-62,39,45))
 
+# read and plot a raster
+# note that since you can provide one or more names of datasets
+#   the function returns a list of rasters
 r <- read_nearth(name = 'NE1_50M_SR_W', what = 'raster', form = 'brick')
-raster::plotRGB(r)
+raster::plotRGB(r[[1]])
 
 ```

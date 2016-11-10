@@ -5,12 +5,15 @@
 \title{Read one raster data set using \code{raster::raster()}, \code{raster::stack()}
 or \code{raster::brick()}}
 \usage{
-read_nearth_raster(filename, form = c("raster", "stack", "brick")[3], ...)
+read_nearth_raster(filename, form = c("raster", "stack", "brick")[3],
+  bb = NULL, ...)
 }
 \arguments{
 \item{filename}{character, one file name}
 
 \item{form}{character one of "raster", "stack", "brick" (default)}
+
+\item{bb}{bounding box to clip to [left, right, bottom, top]}
 
 \item{...}{further arguments for \code{raster::raster()}, \code{raster::stack()}
 or \code{raster::brick()}}

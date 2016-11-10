@@ -47,12 +47,12 @@ bbox_to_SpatialPolygonsDataFrame <- function(bb = c(-72,-63,39,46),...){
 
 
 
-#' Clip polygons (shapefile data) to a bounding box
-#'
-#' @export
-#' @param PP Spatial* object
-#' @param bb the 4 element bounding box to clip to [left, right, bottom, top]
-#' @return the clipped Spatial* object
+# Clip polygons (shapefile data) to a bounding box
+#
+# @export
+# @param PP Spatial* object
+# @param bb the 4 element bounding box to clip to [left, right, bottom, top]
+# @return the clipped Spatial* object
  
 
 #' Test for the existence of a Natural Earth path in R's \code{options()}
@@ -175,7 +175,7 @@ read_nearth_vector <- function(filename, bb = NULL, ...){
    } 
    
    if (!is.null(bb)){
-      spbb <- bbox_to_SpatialPolygonsDataFrame(bb, proj_string = proj4string(x))
+      spbb <- bbox_to_SpatialPolygonsDataFrame(bb, proj_string = sp::proj4string(x))
       x <- raster::crop(x, spbb)
    }
    return(x)
@@ -206,7 +206,7 @@ read_nearth_raster <- function(filename,
        return(NULL)
     } 
     if (!is.null(bb)){
-        spbb <- bbox_to_SpatialPolygonsDataFrame(bb, proj_string = proj4string(x))
+        spbb <- bbox_to_SpatialPolygonsDataFrame(bb, proj_string = sp::proj4string(x))
         x <- raster::crop(x, spbb)
     }
     return(x)
@@ -222,7 +222,8 @@ read_nearth_raster <- function(filename,
 #'    full filepath but providing just the name can be easier.
 #' @param what character either 'vector' (default) or 'raster'
 #' @param ... further arguments for \code{nearth::read_nearth_raster()} or 
-#' or \code{nearth::read_nearth_vector()}
+#'    or \code{nearth::read_nearth_vector()}
+#' @return a list of one or more spatial datasets or NULL
 read_nearth <- function(name = 'ne_50m_coastline',
    what = c('vector', 'raster')[1],
    ...){

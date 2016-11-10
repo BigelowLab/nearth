@@ -16,6 +16,9 @@ full filepath but providing just the name can be easier.}
 \item{...}{further arguments for \code{nearth::read_nearth_raster()} or 
 or \code{nearth::read_nearth_vector()}}
 }
+\value{
+a list of one or more spatial datasets or NULL
+}
 \description{
 Read one or more Natural Earth data files.
 }

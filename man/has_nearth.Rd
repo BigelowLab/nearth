@@ -2,24 +2,17 @@
 % Please edit documentation in R/nearth.R
 \name{has_nearth}
 \alias{has_nearth}
-\title{Clip polygons (shapefile data) to a bounding box}
+\title{Test for the existence of a Natural Earth path in R's \code{options()}}
 \usage{
 has_nearth(what = c("vector", "raster")[1])
 }
 \arguments{
 \item{what}{character, either 'vector' (default) or 'raster'}
-
-\item{PP}{Spatial* object}
-
-\item{bb}{the 4 element bounding box to clip to [left, right, bottom, top]}
 }
 \value{
-the clipped Spatial* object
-Test for the existence of a Natural Earth path in R's \code{options()}
-
 named logical, TRUE of the path exists
 }
 \description{
-Clip polygons (shapefile data) to a bounding box
+Test for the existence of a Natural Earth path in R's \code{options()}
 }
 
