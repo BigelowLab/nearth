@@ -10,4 +10,6 @@
 #' @name nearth-package
 #' @aliases nearth
 #' @docType package
+#' @import rgdal sp raster
+#' @importFrom utils glob2rx
 NULL

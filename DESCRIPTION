@@ -5,12 +5,14 @@ Author: Ben Tupper <btupper@bigelow.org>
 URL: https://github.com/btupper/nearth
 Version: 0.1
 License: GPL (>= 2)
-Description: Natural Earth http://www.naturalearthdata.com/ provides beautiful 
-    physical and cultural data in both vector and raster formats. This package 
-    provides simple utilities for locating such data files downloaded to your 
+Description: Natural Earth http://www.naturalearthdata.com/ provides beautiful
+    physical and cultural data in both vector and raster formats. This package
+    provides simple utilities for locating such data files downloaded to your
     local storage.
 Depends:
     R (>= 3.0)
-Suggests:
-    raster,
-    rgdal
+Imports:
+    rgdal,
+    sp,
+    raster
+RoxygenNote: 5.0.1
