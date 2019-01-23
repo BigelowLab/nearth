@@ -222,8 +222,8 @@ read_nearth_raster <- function(filename,
 #'    full filepath but providing just the name can be easier.
 #' @param what character either 'vector' (default) or 'raster'
 #' @param ... further arguments for \code{nearth::read_nearth_raster()} or 
-#'    or \code{nearth::read_nearth_vector()}
-#' @return a list of one or more spatial datasets or NULL
+#' or \code{nearth::read_nearth_vector()}
+#' @return a list of Spatial* or Raster* objects, one per name
 read_nearth <- function(name = 'ne_50m_coastline',
    what = c('vector', 'raster')[1],
    ...){
